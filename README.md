@@ -50,7 +50,7 @@ streamlit run streamlit_app.py
 
 The project is deployed on Streamlit Community Cloud.
 
-👉 [Open the Live Demo](https://codealphaobjectdetectiontracking-hlwb5kh8j9gud8vdpfscukp.streamlit.app/)
+👉 [Open the Live Demo](https://codealphaobjectdetectiontracking-hlwb5kh8jgud8vdpfscukp.streamlit.app/?utm_source=chatgpt.com)
 
 ## 📸 Application
 
