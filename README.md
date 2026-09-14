@@ -24,6 +24,7 @@ This project uses YOLO (You Only Look Once) to detect objects in images and trac
 
 ## 📂 Project Structure
 
+```text
 CodeAlpha_Object_Detection_Tracking/
 │
 ├── streamlit_app.py
@@ -33,6 +34,7 @@ CodeAlpha_Object_Detection_Tracking/
 ├── packages.txt
 ├── yolo11n.pt
 └── README.md
+```
 
 ## ▶️ How to Run
 
