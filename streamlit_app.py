@@ -1,45 +1,48 @@
 import streamlit as st
-from streamlit_webrtc import webrtc_streamer, VideoProcessorBase
 from ultralytics import YOLO
-import av
-
-model = YOLO("yolo11n.pt")
-
-
-class ObjectDetector(VideoProcessorBase):
-    def recv(self, frame):
-        img = frame.to_ndarray(format="bgr24")
-
-        results = model.track(
-            img,
-            persist=True,
-            verbose=False
-        )
-
-        annotated = results[0].plot()
-
-        return av.VideoFrame.from_ndarray(
-            annotated,
-            format="bgr24"
-        )
-
+from PIL import Image
 
 st.set_page_config(
     page_title="CodeAlpha Object Detection",
     page_icon="🎯"
 )
 
-st.title("🎯 CodeAlpha Object Detection and Tracking")
+st.title("🎯 CodeAlpha Object Detection")
+st.write("Upload an image and YOLO will automatically detect objects.")
 
-st.write(
-    "Real-time object detection and tracking using YOLO."
+model = YOLO("yolo11n.pt")
+
+uploaded_file = st.file_uploader(
+    "📤 Upload an image",
+    type=["jpg", "jpeg", "png", "webp"]
 )
 
-webrtc_streamer(
-    key="object-detection",
-    video_processor_factory=ObjectDetector,
-    media_stream_constraints={
-        "video": True,
-        "audio": False
-    }
-)
+if uploaded_file is not None:
+    image = Image.open(uploaded_file)
+
+    st.subheader("Uploaded Image")
+    st.image(image, use_container_width=True)
+
+    results = model.predict(image)
+
+    detected_image = results[0].plot()
+
+    st.subheader("🔍 Detected Objects")
+    st.image(
+        detected_image,
+        channels="BGR",
+        use_container_width=True
+    )
+
+    if results[0].boxes:
+        names = results[0].names
+        objects = [
+            names[int(cls)]
+            for cls in results[0].boxes.cls.tolist()
+        ]
+
+        st.success(
+            "Detected: " + ", ".join(objects)
+        )
+    else:
+        st.warning("No objects detected.")
